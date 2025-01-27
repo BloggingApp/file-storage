@@ -1,0 +1,9 @@
+app:
+  origin: "http://localhost:4400"
+  port: "4400"
+
+user-service:
+  origin: "http://localhost:8080"
+
+post-service:
+  origin: "http://localhost:8000"
