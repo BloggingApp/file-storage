@@ -1,13 +1,9 @@
 package service
 
-import (
-	"mime/multipart"
-
-	"go.uber.org/zap"
-)
+import "go.uber.org/zap"
 
 type Uploader interface {
-	Upload(typ string, path string, file multipart.File, fileHeader *multipart.FileHeader) (string, error)
+	Upload(d UploadData) (string, error)
 }
 
 type Service struct {

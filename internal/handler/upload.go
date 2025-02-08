@@ -5,11 +5,12 @@ import (
 	"strings"
 
 	"github.com/BloggingApp/cdn/internal/dto"
+	"github.com/BloggingApp/cdn/internal/service"
 )
 
 func (h *Handler) upload(w http.ResponseWriter, r *http.Request) {
-	typ := strings.TrimSpace(r.Header.Get("type"))
-	if typ == "" {
+	fileType := strings.TrimSpace(r.FormValue("type"))
+	if fileType == "" {
 		dto.Respond(w, http.StatusBadRequest, dto.BasicResponse{
 			Ok: false,
 			Details: errNoType.Error(),
@@ -28,7 +29,12 @@ func (h *Handler) upload(w http.ResponseWriter, r *http.Request) {
 
 	path := strings.TrimSpace(r.FormValue("path"))
 
-	url, err := h.services.Uploader.Upload(typ, path, file, fileHeader)
+	url, err := h.services.Uploader.Upload(service.UploadData{
+		FileType: fileType,
+		Path: path,
+		File: file,
+		FileHeader: fileHeader,
+	})
 	if err != nil {
 		dto.Respond(w, http.StatusInternalServerError, dto.BasicResponse{
 			Ok: false,

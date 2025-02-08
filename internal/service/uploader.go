@@ -72,25 +72,32 @@ func (s *uploaderService) saveFile(path string, file multipart.File, fileHeader 
 	return imgURL, nil
 }
 
-func (s *uploaderService) Upload(typ string, path string, file multipart.File, fileHeader *multipart.FileHeader) (string, error) {
+type UploadData struct {
+	FileType   string                `json:"file_type"`
+	Path       string                `json:"path"`
+	File       multipart.File        `json:"file"`
+	FileHeader *multipart.FileHeader `json:"file_header"`
+}
+
+func (s *uploaderService) Upload(d UploadData) (string, error) {
 	buff := make([]byte, 512)
-	if _, err := file.Read(buff); err != nil {
+	if _, err := d.File.Read(buff); err != nil {
 		s.logger.Sugar().Errorf("error while uploading a file: %s", err.Error())
 		return "", err
 	}
 
-	if _, err := file.Seek(0, io.SeekStart); err != nil {
+	if _, err := d.File.Seek(0, io.SeekStart); err != nil {
 		s.logger.Sugar().Errorf("error while uploading a file: %s", err.Error())
 		return "", err
 	}
 
-	typ = strings.ToUpper(strings.TrimSpace(typ))
+	d.FileType = strings.ToUpper(strings.TrimSpace(d.FileType))
 
-	if typ == IMAGE_FILE_TYPE {
+	if d.FileType == IMAGE_FILE_TYPE {
 		if !filetype.IsImage(buff) {
 			return "", ErrFileIsNotAnImage
 		}
-	} else if typ == VIDEO_FILE_TYPE {
+	} else if d.FileType == VIDEO_FILE_TYPE {
 		if !filetype.IsVideo(buff) {
 			return "", ErrFileIsNotAVideo
 		}
@@ -98,5 +105,5 @@ func (s *uploaderService) Upload(typ string, path string, file multipart.File, f
 		return "", ErrTypeIsNotValid
 	}
 
-	return s.saveFile(path, file, fileHeader)
+	return s.saveFile(d.Path, d.File, d.FileHeader)
 }
