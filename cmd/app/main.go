@@ -7,10 +7,10 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/BloggingApp/cdn/internal/config"
-	"github.com/BloggingApp/cdn/internal/handler"
-	"github.com/BloggingApp/cdn/internal/server"
-	"github.com/BloggingApp/cdn/internal/service"
+	"github.com/BloggingApp/file-storage/internal/config"
+	"github.com/BloggingApp/file-storage/internal/handler"
+	"github.com/BloggingApp/file-storage/internal/server"
+	"github.com/BloggingApp/file-storage/internal/service"
 	"github.com/spf13/viper"
 	"go.uber.org/zap"
 )

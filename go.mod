@@ -1,4 +1,4 @@
-module github.com/BloggingApp/cdn
+module github.com/BloggingApp/file-storage
 
 go 1.23.4
 

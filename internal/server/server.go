@@ -4,7 +4,7 @@ import (
 	"context"
 	"net/http"
 
-	"github.com/BloggingApp/cdn/internal/config"
+	"github.com/BloggingApp/file-storage/internal/config"
 )
 
 type Server struct {

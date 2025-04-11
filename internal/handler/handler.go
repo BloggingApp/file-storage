@@ -3,7 +3,7 @@ package handler
 import (
 	"net/http"
 
-	"github.com/BloggingApp/cdn/internal/service"
+	"github.com/BloggingApp/file-storage/internal/service"
 )
 
 type Handler struct {

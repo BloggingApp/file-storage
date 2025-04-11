@@ -4,8 +4,8 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/BloggingApp/cdn/internal/dto"
-	"github.com/BloggingApp/cdn/internal/service"
+	"github.com/BloggingApp/file-storage/internal/dto"
+	"github.com/BloggingApp/file-storage/internal/service"
 )
 
 func (h *Handler) upload(w http.ResponseWriter, r *http.Request) {
