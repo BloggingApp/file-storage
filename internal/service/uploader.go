@@ -130,3 +130,19 @@ func (s *uploaderService) Move(moves map[string]string) error {
 
 	return nil
 }
+
+func (s *uploaderService) Delete(paths []string) error {
+	for _, path := range paths {
+		cleanPath := filepath.Clean(path)
+
+		if !strings.HasPrefix(cleanPath, "./public/") && !strings.HasPrefix(cleanPath, "public/") {
+			continue
+		}
+
+		if err := os.Remove(cleanPath); err != nil {
+			s.logger.Sugar().Errorf("failed to remove path(%s): %s", cleanPath, err.Error())
+		}
+	}
+
+	return nil
+}

@@ -81,3 +81,36 @@ func (h *Handler) move(w http.ResponseWriter, r *http.Request) {
 		Details: "",
 	})
 }
+
+func (h *Handler) delete(w http.ResponseWriter, r *http.Request) {
+	body, err := io.ReadAll(r.Body)
+	if err != nil {
+		dto.Respond(w, http.StatusBadRequest, dto.BasicResponse{
+			Ok: false,
+			Details: err.Error(),
+		})
+		return
+	}
+
+	paths := []string{}
+	if err := json.Unmarshal(body, &paths); err != nil {
+		dto.Respond(w, http.StatusBadRequest, dto.BasicResponse{
+			Ok: false,
+			Details: err.Error(),
+		})
+		return
+	}
+
+	if err := h.services.Uploader.Delete(paths); err != nil {
+		dto.Respond(w, http.StatusInternalServerError, dto.BasicResponse{
+			Ok: false,
+			Details: err.Error(),
+		})
+		return
+	}
+
+	dto.Respond(w, http.StatusOK, dto.BasicResponse{
+		Ok: true,
+		Details: "",
+	})
+}

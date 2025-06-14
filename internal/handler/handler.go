@@ -33,6 +33,13 @@ func (h *Handler) Init() http.Handler {
 		h.move(w, r)
 	})
 
+	mux.HandleFunc("/delete", func(w http.ResponseWriter, r *http.Request) {
+		if r.Method != http.MethodDelete {
+			return
+		}
+		h.move(w, r)
+	})
+
 	publicDir := "public/"
 	mux.Handle("/public/", http.StripPrefix("/public/", http.FileServer(http.Dir(publicDir))))
 
