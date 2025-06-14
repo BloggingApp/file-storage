@@ -135,6 +135,10 @@ func (s *uploaderService) Delete(paths []string) error {
 	for _, path := range paths {
 		cleanPath := filepath.Clean(path)
 
+		if strings.HasPrefix(cleanPath, "/") {
+			cleanPath = "./" + cleanPath[1:]
+		}
+
 		if !strings.HasPrefix(cleanPath, "./public/") && !strings.HasPrefix(cleanPath, "public/") {
 			continue
 		}
