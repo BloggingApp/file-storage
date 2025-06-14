@@ -27,14 +27,14 @@ func (h *Handler) Init() http.Handler {
 	})
 
 	mux.HandleFunc("/move", func(w http.ResponseWriter, r *http.Request) {
-		if r.Method != http.MethodPatch {
+		if r.Method != http.MethodPost {
 			return
 		}
 		h.move(w, r)
 	})
 
 	mux.HandleFunc("/delete", func(w http.ResponseWriter, r *http.Request) {
-		if r.Method != http.MethodDelete {
+		if r.Method != http.MethodPost {
 			return
 		}
 		h.move(w, r)
