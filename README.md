@@ -21,4 +21,12 @@ oldPath: newPath
 e.g.: public/post-images/temp/name.png: public/post-images/perm/name.png
 ```
 
+**POST** -> `/delete` - *delete files*
+```
+Request Body Type: json
+Format:
+array of strings with path
+e.g.: ["some/path", "some/other/path"]
+```
+
 **GET** -> `/public/**` - *get specified file by path*
