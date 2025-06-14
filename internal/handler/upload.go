@@ -1,6 +1,8 @@
 package handler
 
 import (
+	"encoding/json"
+	"io"
 	"net/http"
 	"strings"
 
@@ -45,4 +47,37 @@ func (h *Handler) upload(w http.ResponseWriter, r *http.Request) {
 
 	w.WriteHeader(http.StatusOK)
 	w.Write([]byte(url))
+}
+
+func (h *Handler) move(w http.ResponseWriter, r *http.Request) {
+	body, err := io.ReadAll(r.Body)
+	if err != nil {
+		dto.Respond(w, http.StatusBadRequest, dto.BasicResponse{
+			Ok: false,
+			Details: err.Error(),
+		})
+		return
+	}
+
+	moves := make(map[string]string)
+	if err := json.Unmarshal(body, &moves); err != nil {
+		dto.Respond(w, http.StatusBadRequest, dto.BasicResponse{
+			Ok: false,
+			Details: err.Error(),
+		})
+		return
+	}
+
+	if err := h.services.Uploader.Move(moves); err != nil {
+		dto.Respond(w, http.StatusInternalServerError, dto.BasicResponse{
+			Ok: false,
+			Details: err.Error(),
+		})
+		return
+	}
+
+	dto.Respond(w, http.StatusOK, dto.BasicResponse{
+		Ok: true,
+		Details: "",
+	})
 }

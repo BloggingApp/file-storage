@@ -107,3 +107,26 @@ func (s *uploaderService) Upload(d UploadData) (string, error) {
 
 	return s.saveFile(d.Path, d.File, d.FileHeader)
 }
+
+func (s *uploaderService) Move(moves map[string]string) error {
+	for oldPath, newPath := range moves {
+		if strings.HasPrefix(oldPath, "/") {
+			oldPath = "./" + oldPath[1:]
+		}
+		if strings.HasPrefix(newPath, "/") {
+			newPath = "./" + newPath[1:]
+		}
+
+		if err := os.MkdirAll(filepath.Dir(newPath), os.ModePerm); err != nil {
+			s.logger.Sugar().Errorf("failed to create directories for path(%s): %s", newPath, err.Error())
+			return err
+		}
+
+		if err := os.Rename(oldPath, newPath); err != nil {
+			s.logger.Sugar().Errorf("failed to move file from %s to %s: %s", oldPath, newPath, err.Error())
+			return err
+		}
+	}
+
+	return nil
+}

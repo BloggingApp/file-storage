@@ -26,6 +26,13 @@ func (h *Handler) Init() http.Handler {
 		h.upload(w, r)
 	})
 
+	mux.HandleFunc("/move", func(w http.ResponseWriter, r *http.Request) {
+		if r.Method != http.MethodPatch {
+			return
+		}
+		h.move(w, r)
+	})
+
 	publicDir := "public/"
 	mux.Handle("/public/", http.StripPrefix("/public/", http.FileServer(http.Dir(publicDir))))
 
